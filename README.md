@@ -1,9 +1,17 @@
 # GP
-Programa en Python para gestionar los pagos, crear informes, etc
+A tool to control payments of clients, generate lists, reports, ...
 
 Changelog:
 
-v1.0 - Trabajando en la estructura básica del programa
+v1.0 - 08/01/2019 A very simple first version working with dictionaries and console.
+
+
+
+
+
+
+
+
 
 Notas: 
 Si no quieres usar bases de datos (sqlite viene incluida en la biblioteca estándar y es muy sencillo usarla) puedes usar pickle o cpickle para serializar objetos Python.
