@@ -284,3 +284,10 @@ Python >= 3.6Python < 3.6
 Esta nueva implementación optimiza el rendimiento proveyendo diccionarios hasta dos veces más rápidos. La idea surge en el núcleo de desarrolladores de PyPy y es luego adoptada por CPython. Un artículo del blog oficial de PyPy explica los detalles en este enlace.
 
 No obstante, la clase collections.OrderedDict sigue siendo la opción preferida para garantizar el orden de los elementos de un diccionario, especialmente a través de las distintas versiones de Python. Aún más, el natural orden de las claves a partir de la versión 3.6 debe ser considerado únicamente como una característica de la implementación ─que podría aun cambiar en el futuro─ y no de los diccionarios en sí mismos.
+
+
+-----------------------------------------------------------------------------------------------------
+
+dict_1 = {}
+name = input("What is your name")
+dict_1[name] = ["blah", "blah"]
