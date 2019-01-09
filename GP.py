@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[41]:
+# In[21]:
 
 
 # GP del centro
@@ -9,7 +9,7 @@
 # 08/01/2019
 
 
-# In[42]:
+# In[22]:
 
 
 # para obtener fecha
@@ -34,10 +34,14 @@ elif modo_diccionarios == 0:
     diccionario_tarifas = {"Nombre1": 90, "Nombre2": 50, "Nombre3": 90, "Nombre4": 50, "Nombre5": 90, "Nombre6": 50}
 
     # diccionario con diccionarios dentro para los pagos de cada mes. NESTED DICTIONARY
-    diccionario_pagos = {"201901": {"Nombre2": [44, "Otro", "01/01/2019"]}}
+    diccionario_pagos = {"201901": {"Nombre2": [44, "Otro", "01/01/2019"], "Nombre3": [14, "Efectivo", "06/01/2019"]}, 
+                         "201812": {}, 
+                         "201811": {"Nombre1": [90, "Efectivo", "01/11/2018"], "Nombre2": [50, "Tarjeta", "05/11/2018"], 
+                                    "Nombre3": [90, "Otro", "10/11/2018"], "Nombre4": [50, "Efectivo", "15/11/2018"], 
+                                    "Nombre5": [90, "Tarjeta", "20/11/2018"], "Nombre6": [50, "Otro", "30/11/2018"]}}
 
 
-# In[43]:
+# In[23]:
 
 
 #while 1: DESCOMENTAR e INDENTAR
@@ -62,7 +66,7 @@ while 1:
         break
 
 
-# In[44]:
+# In[24]:
 
 
 # Entramos al modo NUEVO PAGO
@@ -275,7 +279,7 @@ elif modo_principal == 2:
     if modo_consultar_datos == 1:
         print("Modo seleccionado: Lista de tarifas")
 
-        # Menú para preguntar si se quiere ver el diccionario completa de nombres y tarifas o filtrar
+        # Menú para preguntar si se quiere ver el diccionario completo de nombres y tarifas o filtrar
         print("Introduce el modo (1-2) en el que quieres entrar y presiona Enter:")
         print("1: Lista completa de tarifas")
         print("2: Buscar en la lista de tarifas")
@@ -351,6 +355,153 @@ elif modo_principal == 2:
     # Modo LISTA DE PAGOS
     elif modo_consultar_datos == 2:
         print("Modo seleccionado: Lista de pagos")
+        
+        # Menú para preguntar si se quiere ver el diccionario completo de pagos o filtrar
+        print("Introduce el modo (1-2) en el que quieres entrar y presiona Enter:")
+        print("1: Lista completa de pagos")
+        print("2: Buscar en la lista de pagos")
+        while 1:
+            try:
+                modo_lista_pagos = int(input("Modo: "))
+            except ValueError:
+                print ("Debes escribir un número")
+            else:
+                break        
+
+        # Modo LISTA COMPLETA DE PAGOS
+        if modo_lista_pagos == 1:
+            print("Modo seleccionado: Lista completa de pagos")
+            for fecha, nombre in diccionario_pagos.items():
+                print("\nMes:", fecha[4:6], "/", fecha[:4])
+                if not nombre:
+                    print("Lista del mes creada pero sin pagos registrados.")
+                else:
+                    print("NOMBRE", "\t\t", "CANTIDAD PAGADA", "\t", "FORMA PAGO", "\t", "FECHA PAGO")
+                    for key in nombre:
+                        print(key, "\t", nombre[key][0], "\t\t\t", nombre[key][1], "\t\t", nombre[key][2])
+
+        # Modo BUSCAR EN LISTA DE PAGOS
+        elif modo_lista_pagos == 2:    
+            print("Modo seleccionado: Buscar en la lista de pagos")
+
+            print("Introduce el modo (1-5) de búsqueda y presiona Enter:")
+            print("1: Mes")
+            print("2: Nombre")
+            print("3: Cantidad pagada")
+            print("4: Forma de pago")
+            print("5: Fecha de pago")
+            
+            
+            while 1:
+                try:
+                    modo_lista_pagos_buscar = int(input("Modo: "))
+                except ValueError:
+                    print ("Debes escribir un número")
+                else:
+                    break
+
+            # Modo BUSCAR EN LISTA DE PAGOS POR MES
+            if modo_lista_pagos_buscar == 1:
+                print("Introduce el mes a buscar (2 cifras)")
+                while 1:
+                    try:
+                        lista_pagos_buscar_mes_tmp = input("Mes: ").zfill(2)
+                        if lista_pagos_buscar_mes_tmp.isdigit() and int(lista_pagos_buscar_mes_tmp) > 0 and int(lista_pagos_buscar_mes_tmp) <=12:
+                            lista_pagos_buscar_mes = lista_pagos_buscar_mes_tmp
+                        else:
+                            raise ValueError
+                    except ValueError:
+                        print ("Debes escribir un número entre 1 y 12")
+                    else:
+                        break
+
+                print("Introduce el año a buscar (4 cifras)")
+                while 1:
+                    try:
+                        lista_pagos_buscar_anio_tmp = input("Año: ").zfill(4)
+                        if lista_pagos_buscar_anio_tmp.isdigit() and int(lista_pagos_buscar_anio_tmp) > 0 and int(lista_pagos_buscar_anio_tmp) <=9999:
+                            lista_pagos_buscar_anio = lista_pagos_buscar_anio_tmp
+                        else:
+                            raise ValueError
+                    except ValueError:
+                        print ("Debes escribir un número de cuatro cifras")
+                    else:
+                        break                    
+                
+                if lista_pagos_buscar_anio+lista_pagos_buscar_mes in diccionario_pagos:                  
+                    print("Pagos del mes", lista_pagos_buscar_mes, "del año", lista_pagos_buscar_anio)
+                    for fecha, registros in diccionario_pagos.items():
+                        if fecha == lista_pagos_buscar_anio+lista_pagos_buscar_mes:
+                            if not registros:
+                                print("Lista del mes creada pero sin pagos registrados.")
+                            else:
+                                print("NOMBRE", "\t\t", "CANTIDAD PAGADA", "\t", "FORMA PAGO", "\t", "FECHA PAGO")
+                                for nombre in registros:
+                                    print(nombre, "\t", registros[nombre][0], "\t\t\t", registros[nombre][1], "\t\t", registros[nombre][2])  
+                else:
+                    print("No hay registros del mes", lista_pagos_buscar_mes, "del año", lista_pagos_buscar_anio,", lista del mes no creada")
+
+
+            # Modo BUSCAR EN LISTA DE PAGOS POR NOMBRE
+            if modo_lista_pagos_buscar == 2:
+
+                # Pido nombre del paciente y compruebo si existe en el diccionario de pagos
+                print("Introduce el nombre del paciente")
+                #while 1:
+                lista_pagos_buscar_nombre = input("Nombre: ")
+
+                for fecha, registros in diccionario_pagos.items():
+                    print("Pago del mes", fecha[4:], "del año", fecha[:4])
+                    for nombre in registros:
+                        if lista_pagos_buscar_nombre in nombre:
+                            print("NOMBRE", "\t\t", "CANTIDAD PAGADA", "\t", "FORMA PAGO", "\t", "FECHA PAGO")
+                            if nombre == lista_pagos_buscar_nombre:
+                                print(nombre, "\t", registros[nombre][0], "\t\t\t", registros[nombre][1], "\t\t", registros[nombre][2])  
+                    if not lista_pagos_buscar_nombre in registros:
+                        print("No hay registros coincidentes con el nombre introducido en", fecha)
+                
+                #probar si pongo if lista_pagos_buscar_nombre in registros y quito for nombre in registros. probar if lista_pagos_buscar_nombre in items
+                
+#                print("Introduce el nombre exacto a buscar")
+#                busq = input("Nombre: ")
+
+ #               if busq in diccionario_tarifas:
+  #                  print("NOMBRE", "\t\t", "TARIFA")
+      #              print(busq, "\t", diccionario_tarifas.get(busq))
+     #           else:
+    #                print("No hay coincidencias")
+                    
+   #         # Modo BUSCAR EN LISTA DE TARIFAS POR TARIFA
+  #          elif modo_lista_tarifas_buscar == 2:
+ #               print("Introduce la tarifa a buscar en €/mes. Ej: 90")
+
+       #         while 1:
+       #             try:
+       #                 busq = int(input("Tarifa: "))
+       #             except ValueError:
+       #                 print ("Debes escribir un número")
+       #             else:
+       #                 break
+                        
+           #     if busq in diccionario_tarifas.values():
+          #          print("NOMBRE", "\t\t", "TARIFA")
+         #           for key, value in diccionario_tarifas.items():
+        #                if value == busq:
+       #                     print(key, "\t", value)
+      #          else:
+     #               print("No hay coincidencias")
+
+            # Error al seleccionar modo
+    #        else:
+   #             print("Error al seleccionar el modo")
+
+        # Error al seleccionar modo
+  #      else:
+ #           print("Error al seleccionar el modo")
+
+
+
+#-----------------------------------------
 
     # Error al seleccionar modo
     else:
@@ -437,8 +588,4 @@ print("______________________")
 
 
 
-# In[ ]:
-
-
-
-
+# 
