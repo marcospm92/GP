@@ -4,6 +4,7 @@ A tool to control payments of clients, generate lists, reports, ...
 Changelog:
 
 v1.0 - 08/01/2019. A very simple first version working with dictionaries and console.
+
 v1.1 - 09/01/2019. Improved version with the option of new payments
 
 
