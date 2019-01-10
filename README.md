@@ -7,6 +7,8 @@ v1.0 - 08/01/2019. A very simple first version working with dictionaries and con
 
 v1.1 - 09/01/2019. Improved version with the option of new payments
 
+v1.2 - 10/01/2019. Added the option of search and filter payments
+
 
 
 
