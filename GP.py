@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[112]:
+# In[204]:
 
 
 # GP del centro
 # v1.2
-# 10/01/2019
+# 11/01/2019
 
 
-# In[113]:
+# In[205]:
 
 
 import time # para obtener fecha
@@ -43,28 +43,86 @@ elif modo_diccionarios == 0:
                          "201902": {},
                          "201903": {"Nombre1": [90, "Efectivo", "01/03/2019"]}}
 
+def print_titulo1(texto, altura):
+    # 66 asteriscos
+    # 58 caracteres por línea máximo
+    # máximo 2 líneas
+    # texto es el texto a escribir
+    # altura es el numero de lineas en blanco entre texto y bordes
+    
 
-# In[114]:
+    if len(texto) > 58:
+        texto_dividido = texto.split(" ")
+        if (len(texto_dividido)) % 2 == 0:
+            division = int(len(texto_dividido)/2)
+            texto_linea_1 = texto_dividido[:division]
+            texto_linea_2 = texto_dividido[division:]
+        else:
+            division = int((len(texto_dividido)+1)/2)
+            texto_linea_1 = texto_dividido[:division]
+            texto_1 = " ".join(texto_linea_1)
+            longitud_linea_1 = len(texto_1)
+            if longitud_linea_1 % 2 == 1:
+                texto_1 = texto_1 + " "
+            
+            texto_linea_2 = texto_dividido[division:] 
+            texto_2 = " ".join(texto_linea_2)
+            longitud_linea_2 = len(texto_2)
+            if longitud_linea_2 % 2 == 1:
+                texto_2 = texto_2 + " "
+                
+        espacios_linea_1 = int((64-longitud_linea_1)/2)
+        espacios_linea_2 = int((64-longitud_linea_2)/2)
+
+    else:
+        if len(texto) % 2 == 1:
+            texto = texto + " "
+        espacios = int((64-len(texto))/2)
+
+    print("*" * 66)
+    for x in range(altura):
+        print("*" + " " * 64 + "*")
+    if len(texto) <= 58:
+        print("*" + " " * espacios + texto + " " * espacios + "*")
+    else:
+        print("*" + " " * espacios_linea_1 + texto_1 + " " * espacios_linea_1 + "*")
+        print("*" + " " * 64 + "*")
+        print("*" + " " * espacios_linea_2 + texto_2 + " " * espacios_linea_2 + "*")
+    for x in range(altura):
+        print("*" + " " * 64 + "*")
+    print("*" * 66)
+    print("\n")    
+    
+    
+def print_titulo2(texto):
+    # longitud total: 66 caracteres
+    
+    if len(texto) % 2 == 1:
+        texto = texto + " "
+    espacios = int((66-len(texto))/2)    
+    print(" " * espacios + texto + " " * espacios)
+    print("*" * 66)
+    print("\n")
+    
+
+
+# In[206]:
 
 
 while 1: 
 
-   print("*********************************")
-   print("*\t\t\t\t*")
-   print("*\tGESTIÓN DE PAGOS\t*")
-   print("*\t\t\t\t*")
-   print("*********************************")
-
+   print_titulo1("GESTIÓN DE PAGOS", 1)
+       
    # Pedimos el modo en el que vamos a entrar
    # Primero mostramos un menú con las opciones disponibles
    
-   print("Introduce el modo (1-5) en el que quieres entrar y presiona Enter:")
-   print("1: Nuevo pago")
-   print("2: Consultar datos")
-   print("3: Modificar datos")
-   print("4: Generar informe")
-   print("5: Generar nuevo mes")
-   print("6: Salir")
+   print("Introduce el modo (1-5) en el que quieres entrar y presiona Enter:\n")
+   print("\t1: Nuevo pago")
+   print("\t2: Consultar datos")
+   print("\t3: Modificar datos")
+   print("\t4: Generar informe")
+   print("\t5: Generar nuevo mes")
+   print("\t6: Salir")
 
    # Recogemos la entrada del usuario
    # Si da error al castear a int es que el dato introducido no es un número, así que lo pedimos de nuevo hasta que sea correcto
@@ -80,28 +138,28 @@ while 1:
    
    # Entramos al modo NUEVO PAGO
    if modo_principal == 1:
-       print("Modo seleccionado: Nuevo pago")
+       print_titulo2("MODO NUEVO PAGO")
 
        # Pido nombre del paciente y compruebo si existe en el diccionario de tarifas
-       print("Introduce el nombre del paciente")
+       print("Introduce el nombre del paciente\n")
        while 1:
            nuevo_pago_nombre = input("Nombre: ")
 
            if nuevo_pago_nombre in diccionario_tarifas:
-               print("Paciente encontrado")
+               print("\nPaciente encontrado")
                nuevo_pago_tarifa = diccionario_tarifas.get(nuevo_pago_nombre)
                break
            else:
-               print("Paciente no encontrado")
+               print("\nPaciente no encontrado")
 
        # Confirmo la cantidad pagada del diccionario de tarifas
-       print("El paciente tiene asignada una tarifa de", nuevo_pago_tarifa, "€.")
-       print("¿Se corresponde esta cifra con el pago?")
-       print("1: Sí, el paciente paga", nuevo_pago_tarifa, "€")
-       print("2: No, el paciente paga otra cantidad")
+       print("El paciente", nuevo_pago_nombre, "tiene asignada una tarifa de", nuevo_pago_tarifa, "€.")
+       print("¿Se corresponde esta cifra con el pago?\n")
+       print("\t1: Sí, el paciente paga", nuevo_pago_tarifa, "€")
+       print("\t2: No, el paciente paga otra cantidad")
        while 1:
            try:
-               modo_nuevo_pago_tarifa = int(input())
+               modo_nuevo_pago_tarifa = int(input("Selecciona una opción: "))
            except ValueError:
                print ("Debes escribir un número")
            else:
@@ -130,9 +188,9 @@ while 1:
 
        # Pregunto método de pago
        print("Introduce la forma de pago")
-       print("1: Efectivo")
-       print("2: Tarjeta")
-       print("3: Otro")
+       print("\t1: Efectivo")
+       print("\t2: Tarjeta")
+       print("\t3: Otro")
 
        while 1:
            try:
@@ -164,8 +222,8 @@ while 1:
 
        # Pregunto si se ha realizado el pago hoy y si no pido fecha
        print("¿Usar la fecha de hoy para el pago?")
-       print("1: Sí, usar", time.strftime("%d/%m/%Y"))
-       print("2: No, elegir otra fecha")    
+       print("\t1: Sí, usar", time.strftime("%d/%m/%Y"))
+       print("\t2: No, elegir otra fecha")    
 
        while 1:
            try:
@@ -236,8 +294,8 @@ while 1:
        print("Forma de pago: ", nuevo_pago_metodo)
        print("Fecha: ", nuevo_pago_fecha)
        print("¿Confirmar?")
-       print("1: Sí")
-       print("2: No")
+       print("\t1: Sí")
+       print("\t2: No")
 
        while 1:
            try:
@@ -262,9 +320,9 @@ while 1:
            print("Error al seleccionar confirmación")   
        
        print("Operación finalizada")
-       print("1: Volver al menú principal")
-       print("2: Volver al menú de nuevo pago")
-       print("3: Salir de la aplicación")
+       print("\t1: Volver al menú principal")
+       print("\t2: Volver al menú de nuevo pago")
+       print("\t3: Salir de la aplicación")
        
        while 1:
            try:
@@ -288,12 +346,12 @@ while 1:
    # Entramos al modo CONSULTAR DATOS
 
    elif modo_principal == 2:    
-       print("Modo seleccionado: Consultar datos")
+       print_titulo2("MODO CONSULTAR DATOS")
 
        # Menú para preguntar si se quieren consultar tarifas o pagos
        print("Introduce el modo (1-2) en el que quieres entrar y presiona Enter:")
-       print("1: Consultar lista de tarifas")
-       print("2: Consultar lista de pagos")
+       print("\t1: Consultar lista de tarifas")
+       print("\t2: Consultar lista de pagos")
 
        while 1:
            try:
@@ -309,8 +367,8 @@ while 1:
 
            # Menú para preguntar si se quiere ver el diccionario completo de nombres y tarifas o filtrar
            print("Introduce el modo (1-2) en el que quieres entrar y presiona Enter:")
-           print("1: Lista completa de tarifas")
-           print("2: Buscar en la lista de tarifas")
+           print("\t1: Lista completa de tarifas")
+           print("\t2: Buscar en la lista de tarifas")
            while 1:
                try:
                    modo_lista_tarifas = int(input("Modo: "))
@@ -331,8 +389,8 @@ while 1:
                print("Modo seleccionado: Buscar en la lista de tarifas")
 
                print("Introduce el modo (1-2) de búsqueda y presiona Enter:")
-               print("1: Nombre")
-               print("2: Tarifa")
+               print("\t1: Nombre")
+               print("\t2: Tarifa")
                while 1:
                    try:
                        modo_lista_tarifas_buscar = int(input("Modo: "))
@@ -386,8 +444,8 @@ while 1:
 
            # Menú para preguntar si se quiere ver el diccionario completo de pagos o filtrar
            print("Introduce el modo (1-2) en el que quieres entrar y presiona Enter:")
-           print("1: Lista completa de pagos")
-           print("2: Buscar en la lista de pagos")
+           print("\t1: Lista completa de pagos")
+           print("\t2: Buscar en la lista de pagos")
            while 1:
                try:
                    modo_lista_pagos = int(input("Modo: "))
@@ -413,11 +471,11 @@ while 1:
                print("Modo seleccionado: Buscar en la lista de pagos")
 
                print("Introduce el modo (1-5) de búsqueda y presiona Enter:")
-               print("1: Mes")
-               print("2: Nombre")
-               print("3: Cantidad pagada")
-               print("4: Forma de pago")
-               print("5: Fecha de pago")
+               print("\t1: Mes")
+               print("\t2: Nombre")
+               print("\t3: Cantidad pagada")
+               print("\t4: Forma de pago")
+               print("\t5: Fecha de pago")
 
 
                while 1:
@@ -519,9 +577,9 @@ while 1:
                    
                    # Pido forma de pago y compruebo si hay coincidencias en el diccionario de pagos                    
                    print("Introduce la forma de pago (1-3) a buscar y presiona Enter:")
-                   print("1: Efectivo")
-                   print("2: Tarjeta")
-                   print("3: Otro")
+                   print("\t1: Efectivo")
+                   print("\t2: Tarjeta")
+                   print("\t3: Otro")
 
                    while 1:
                        try:
@@ -563,8 +621,8 @@ while 1:
 
                    # Pregunto si se quiere usar la fecha de hoy y si no pido fecha a buscar
                    print("¿Usar la fecha de hoy para la búsqueda?")
-                   print("1: Sí, usar", time.strftime("%d/%m/%Y"))
-                   print("2: No, elegir otra fecha")    
+                   print("\t1: Sí, usar", time.strftime("%d/%m/%Y"))
+                   print("\t2: No, elegir otra fecha")    
 
                    while 1:
                        try:
@@ -659,15 +717,15 @@ while 1:
    # Entramos al modo MODIFICAR DATOS
 
    elif modo_principal == 3:
-       print("Modo seleccionado: Modificar datos")
+       print_titulo2("MODO MODIFICAR DATOS")
 
    # Entramos al modo GENERAR INFORME
    elif modo_principal == 4:
-       print("Modo seleccionado: Generar informe")
+       print_titulo2("MODO GENERAR INFORME")
 
    # Entramos al modo NUEVO MES
    elif modo_principal == 5:
-       print("Modo seleccionado: Nuevo mes")
+       print_titulo2("MODO NUEVO MES")
 
        mes = time.strftime("%m")
        anio = time.strftime("%Y")
@@ -676,8 +734,8 @@ while 1:
            print("Mes: ", mes)
            print("Año: ", anio)
            print("¿Quieres crear la lista con los datos anteriores?")
-           print("1: Sí, crear la lista")
-           print("2: No, modificar datos")
+           print("\t1: Sí, crear la lista")
+           print("\t2: No, modificar datos")
 
            while 1:
                try:
@@ -724,16 +782,12 @@ while 1:
 
    # Entramos al modo SALIR
    elif modo_principal == 6:
-       print("Modo seleccionado: Salir")
+       #print("Modo seleccionado: Salir")
        break                        
                        
    # Error al entrar al modo
    else:
        print("Error al seleccionar el modo")
-   
-
-   
-   print("\n______________________\n\n")
 
 
 # In[ ]:
